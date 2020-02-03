@@ -3,6 +3,7 @@ import pandas as pd
 
 from text2graph import Text2Graph
 
+from data import DOC_2
 from utils import preprocess
 
 
@@ -19,7 +20,7 @@ class Corpora2Graph:
         for document in self.corpora:
             doc = Text2Graph(document)
             doc.preprocess(stop_filter=False, pos_filter=False)
-            doc.transform(window=4)
+            doc.transform(window=6)
             self.corpora_graphs.append(doc)
 
     def word_index(self):
@@ -47,10 +48,6 @@ class Corpora2Graph:
                 i = self.word_to_index[word]
                 corpora_centrality_matrix[i][j] = score
 
-        centrality_df = pd.DataFrame(corpora_centrality_matrix,
-                                     index=self.vocab)
-
-        print(centrality_df)
         return corpora_centrality_matrix
 
     def count_matrix(self):
@@ -65,8 +62,6 @@ class Corpora2Graph:
                 i = self.word_to_index[word]
                 count_matrix[i][j] = score
 
-        count_df = pd.DataFrame(count_matrix, index=self.vocab)
-        print(count_df)
         return count_matrix
 
     def tfidf(self, matrix):
@@ -96,30 +91,18 @@ class Corpora2Graph:
             for i in range(0, nw):
                 tfidf[i][j] /= normalization_constant
 
-        count_df = pd.DataFrame(tfidf, index=self.vocab)
-        print(count_df)
-
-        return tfidf
+        return pd.DataFrame(tfidf, index=self.vocab)
 
 
 if __name__ == "__main__":
-    doc_list = ["This document is about fruits. How mango is a fruit and how "
-                "guava is a fruit. I personally like both fruits, but mangoes "
-                "are tastier than guavas.",
-
-                "This document is about animals. Animals such as cats and "
-                "dogs. I like both animals equally. Cats and dogs are my "
-                "fave animals.",
-
-                ]
+    doc_list = DOC_2
 
     doc_graph = Corpora2Graph(corpora=doc_list)
     doc_graph.transform()
     doc_graph.word_index()
-    doc_graph.tfidf(doc_graph.centrality_matrix())
-    doc_graph.tfidf(doc_graph.count_matrix())
-    graph_1 = doc_graph.corpora_graphs[0]
-    print(graph_1.graph)
-    print(graph_1.degree_centrality())
+    df_1 = doc_graph.tfidf(doc_graph.centrality_matrix())
+    df_2 = doc_graph.tfidf(doc_graph.count_matrix())
+    print(df_1)
+    print(df_2)
 
 
