@@ -95,6 +95,9 @@ def node_geodesic(graph, node_1, node_2):
                     new_gen_paths.append(path + adj_node)
         paths = new_gen_paths
 
+    if not len(finished_traverses):
+        return None
+
     return min([len(path) for path in finished_traverses])
 
 
@@ -105,4 +108,4 @@ if __name__ == "__main__":
          '4': ['5'],
          '5': ['4']}
 
-    print(node_geodesic(G, '1', '3'))
+    print(node_geodesic(G, '1', '4'))
