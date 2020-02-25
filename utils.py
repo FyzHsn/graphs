@@ -75,14 +75,14 @@ def node_geodesic(graph, node_1, node_2):
     :type graph: dict of the form {int: list}
     :param node_1: first node of interest
     :type node_1: int
-    :param node_2: second node of interest
+    :param node_2: second node of interest different than first node
     :type node_2: int
     :return: None (if the points are disconnected) or the shortest distance
     between the two.
     :rtype: None or int
     """
 
-    paths = [node_1]
+    paths = [[node_1]]
     finished_traverses = []
 
     while len(paths):
@@ -90,9 +90,9 @@ def node_geodesic(graph, node_1, node_2):
         for path in paths:
             for adj_node in graph[path[-1]]:
                 if adj_node == node_2:
-                    finished_traverses.append(path + adj_node)
+                    finished_traverses.append(path + [adj_node])
                 elif adj_node not in path:
-                    new_gen_paths.append(path + adj_node)
+                    new_gen_paths.append(path + [adj_node])
         paths = new_gen_paths
 
     if not len(finished_traverses):
@@ -102,10 +102,10 @@ def node_geodesic(graph, node_1, node_2):
 
 
 if __name__ == "__main__":
-    G = {'1': ['2', '3'],
-         '2': ['1', '3'],
-         '3': ['1', '2'],
-         '4': ['5'],
-         '5': ['4']}
+    G = [[0, 1, 1, 0, 0],
+         [1, 0, 1, 0, 0],
+         [1, 1, 0, 0, 0],
+         [0, 0, 0, 0, 1],
+         [0, 0, 0, 1, 0]]
 
-    print(node_geodesic(G, '1', '4'))
+    print(node_geodesic(G, 1, 2))

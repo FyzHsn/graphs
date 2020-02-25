@@ -1,7 +1,10 @@
 import re
 
 from data import DOC_1
-from utils import preprocess
+from utils import (
+    node_geodesic,
+    preprocess
+)
 
 
 class Text2Graph:
@@ -16,7 +19,7 @@ class Text2Graph:
                                          pos_filter=pos_filter))
 
     @staticmethod
-    def update_graph(graph, text, window):
+    def weighted_graph(graph, text, window):
         text += " PADPAD" * (window - 2)
         text = text.split()
 
@@ -39,7 +42,7 @@ class Text2Graph:
 
     def transform(self, window=2):
         for sentence in re.split("[?.]", self.text):
-            self.graph = self.update_graph(self.graph, sentence, window)
+            self.graph = self.weighted_graph(self.graph, sentence, window)
 
     def degree_centrality(self):
         node_score = {}
@@ -72,6 +75,12 @@ class Text2Graph:
         node_score = self.degree_centrality()
         node_num = len(node_score) - 1
         return [(n, s / node_num) for (n, s) in node_score]
+
+    def harmonic_centrality(self):
+        node_dist = {}
+        for (node_1, node_2), weight_12 in self.graph.items():
+            node_dist[(node_1, node_2)] = node_geodesic()
+
 
 
 if __name__ == "__main__":
