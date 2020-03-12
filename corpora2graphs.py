@@ -9,6 +9,12 @@ from utils import preprocess
 
 class Corpora2Graph:
     def __init__(self, corpora):
+        """Initialize set of documents (corpora)
+
+        :param corpora: list of documents
+        :type corpora: list of str
+        """
+
         self.corpora = corpora
         self.vocab = set({})
         self.corpora_graphs = []
@@ -17,6 +23,11 @@ class Corpora2Graph:
         self.index_to_word = None
 
     def transform(self):
+        """Transform corpora
+
+        Transform each document into a graph using Text2Graph
+        """
+
         for document in self.corpora:
             doc = Text2Graph(document)
             doc.preprocess(stop_filter=False, pos_filter=False)
@@ -24,6 +35,12 @@ class Corpora2Graph:
             self.corpora_graphs.append(doc)
 
     def word_index(self):
+        """Index corpora vocabulary
+
+        After preprocessing, map corpora vocabulary to indices corresponding to
+        the matrix representation.
+        """
+
         docs = preprocess(". ".join(self.corpora),
                           stop_filter=False,
                           pos_filter=False)
@@ -37,6 +54,15 @@ class Corpora2Graph:
         self.index_to_word = {i: w for (i, w) in enumerate(self.vocab)}
 
     def centrality_matrix(self):
+        """Matrix representation of word centrality
+
+        Create a matrix representation with the degree centrality of the
+        corpora.
+
+        :return: corpora centrality matrix
+        :rtype: list of list
+        """
+
         m = len(self.word_to_index.keys())
         n = len(self.corpora)
 
@@ -51,6 +77,14 @@ class Corpora2Graph:
         return corpora_centrality_matrix
 
     def count_matrix(self):
+        """Matrix representation of word frequency
+
+        Create a matrix representation using word frequency in the corpora.
+
+        :return: corpora word frequency matrix
+        :rtype: list of list
+        """
+
         m = len(self.word_to_index.keys())
         n = len(self.corpora)
 
@@ -65,6 +99,19 @@ class Corpora2Graph:
         return count_matrix
 
     def tfidf(self, matrix):
+        """Tfidf matrix
+
+        Create term frequency-inverse document frequency matrix
+        representation of the corpora matrix representation which could be
+        based on frequency based OR centrality based measures.
+
+        :param matrix: some metric representation of the corpora
+        :type matrix: list of list
+        :return: comparison of tfidf scores applied tovarious word count
+        measures.
+        :rtype: pd.DataFrame
+        """
+
         nw = len(matrix)
         nd = len(matrix[0])
         df = {i: 0 for i in range(0, nw)}

@@ -1,6 +1,5 @@
 # Applying Graphs To NLP
-This repository is dedicated to the application and experimentation of the
- application of graph based methods to various NLP and machine learning tasks.
+This repository is dedicated to the application and experimentation of graph based methods to various NLP and machine learning tasks.
 
 ## Graph Based Modules
 1. Text2Graph
