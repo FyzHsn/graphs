@@ -1,0 +1,11 @@
+*.pyc
+**/.idea/
+**/env.py
+*.ini
+**/.DS_Store
+**/.ipynb_checkpoints
+__pycache__/
+**/.vagrant/
+*.cache*
+*~*
+*csv

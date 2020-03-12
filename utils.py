@@ -3,6 +3,8 @@ import re
 import nltk
 from nltk.stem import PorterStemmer
 
+from graph import Graph
+
 
 STOPWORDS = {"i", "me", "us", "you", "them", "he", "she", "him", "her",
              "their", "theirs", "it", "that",
@@ -33,7 +35,13 @@ def preprocess(text, stop_filter=True, pos_filter=True):
     Clean text by removing punctuations, stopwords, non-noun and
     adjectives in addition to stemming.
 
-    :return: clean text
+    :param text: document text that needs to be preprocessed
+    :type text: str
+    :param stop_filter: stopword filter status
+    :type stop_filter: bool
+    :param pos_filter: part of speech filter status
+    :type pos_filter: bool
+    :return: stemmed and preprocessed text
     :rtype: str
     """
 
@@ -63,3 +71,15 @@ def preprocess(text, stop_filter=True, pos_filter=True):
         cleaned_sentence_list.append(sentence)
 
     return cleaned_sentence_list
+
+
+if __name__ == "__main__":
+   graph = {'1': ['2', '3'],
+            '2': ['1', '3'],
+            '3': ['1', '2'],
+            '4': ['5'],
+            '5': ['4']}
+   g = Graph(graph=graph)
+   g.vectorize()
+   print(g.node_geodesic('1', '2'))
+
