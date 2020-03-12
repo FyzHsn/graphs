@@ -35,7 +35,13 @@ def preprocess(text, stop_filter=True, pos_filter=True):
     Clean text by removing punctuations, stopwords, non-noun and
     adjectives in addition to stemming.
 
-    :return: clean text
+    :param text: document text that needs to be preprocessed
+    :type text: str
+    :param stop_filter: stopword filter status
+    :type stop_filter: bool
+    :param pos_filter: part of speech filter status
+    :type pos_filter: bool
+    :return: stemmed and preprocessed text
     :rtype: str
     """
 

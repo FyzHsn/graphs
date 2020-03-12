@@ -1,5 +1,11 @@
 class Graph:
     def __init__(self, graph):
+        """Initialize graph
+
+        :param graph: collection of nodes showing the list of adjacent nodes
+        :type graph: dict of list
+        """
+
         self.graph = graph
         self.node_num = None
         self.node_vec_map = None
@@ -7,6 +13,9 @@ class Graph:
         self.matrix = None
 
     def _vector_repr_init(self):
+        """Initialize vector space and representation matrix for graph
+        """
+
         self.node_num = len(self.graph.keys())
 
         self.node_vec_map = {node: index for index, node in
@@ -17,6 +26,9 @@ class Graph:
                        range(0, self.node_num)]
 
     def vectorize(self):
+        """Matrix representation of graph
+        """
+
         self._vector_repr_init()
         for node, adj_nodes in self.graph.items():
             node_index = self.node_vec_map[node]
