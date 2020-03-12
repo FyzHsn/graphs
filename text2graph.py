@@ -10,7 +10,6 @@ from utils import (
 class Text2Graph:
     def __init__(self, text):
         self.text = text
-        self.edges = {}
         self.graph = {}
 
     def preprocess(self, stop_filter=True, pos_filter=True):

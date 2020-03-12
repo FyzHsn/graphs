@@ -3,6 +3,8 @@ import re
 import nltk
 from nltk.stem import PorterStemmer
 
+from graph import Graph
+
 
 STOPWORDS = {"i", "me", "us", "you", "them", "he", "she", "him", "her",
              "their", "theirs", "it", "that",
@@ -65,47 +67,13 @@ def preprocess(text, stop_filter=True, pos_filter=True):
     return cleaned_sentence_list
 
 
-def node_geodesic(graph, node_1, node_2):
-    """Geodesic between two nodes
-
-    This method finds the shortest path between two nodes in a graph. This
-    function can be applied to any connected or disconnected undirected graphs.
-
-    :param graph: node relation of the undirected graph
-    :type graph: dict of the form {int: list}
-    :param node_1: first node of interest
-    :type node_1: int
-    :param node_2: second node of interest different than first node
-    :type node_2: int
-    :return: None (if the points are disconnected) or the shortest distance
-    between the two.
-    :rtype: None or int
-    """
-
-    paths = [[node_1]]
-    finished_traverses = []
-
-    while len(paths):
-        new_gen_paths = []
-        for path in paths:
-            for adj_node in graph[path[-1]]:
-                if adj_node == node_2:
-                    finished_traverses.append(path + [adj_node])
-                elif adj_node not in path:
-                    new_gen_paths.append(path + [adj_node])
-        paths = new_gen_paths
-
-    if not len(finished_traverses):
-        return None
-
-    return min([len(path) for path in finished_traverses])
-
-
 if __name__ == "__main__":
-    G = [[0, 1, 1, 0, 0],
-         [1, 0, 1, 0, 0],
-         [1, 1, 0, 0, 0],
-         [0, 0, 0, 0, 1],
-         [0, 0, 0, 1, 0]]
+   graph = {'1': ['2', '3'],
+            '2': ['1', '3'],
+            '3': ['1', '2'],
+            '4': ['5'],
+            '5': ['4']}
+   g = Graph(graph=graph)
+   g.vectorize()
+   print(g.node_geodesic('1', '2'))
 
-    print(node_geodesic(G, 1, 2))

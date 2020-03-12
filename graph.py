@@ -22,7 +22,7 @@ class Graph:
             node_index = self.node_vec_map[node]
 
             for adj_node in adj_nodes:
-                self.matrix[node_index, self.node_vec_map[adj_node]] = 1
+                self.matrix[node_index][self.node_vec_map[adj_node]] = 1
 
     def node_geodesic(self, node_1, node_2):
         """Geodesic between two nodes
